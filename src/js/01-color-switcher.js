@@ -10,8 +10,6 @@ refs.btnStart.addEventListener('click', (evt) => {
   timerId = setInterval(() => {
     refs.body.style.backgroundColor = getRandomHexColor();
   }, 1000);
-    
-    // elem.setAttribute(name, value) 
 });
 
 refs.btnStop.addEventListener('click', () => {

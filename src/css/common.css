@@ -16,3 +16,35 @@ img {
   display: block;
   max-width: 100%;
 }
+.timer{
+  display: flex;
+}
+.field{
+  /* display: flex; */
+margin-top: 10px;
+margin-right: 10px;
+}
+.value{
+color: teal;
+display: flex;
+text-align: center;
+}
+.label{
+  text-shadow: 2px ;
+}
+button{
+  padding: 2px 30px;
+  cursor: pointer;
+  transition: all 300ms linear;
+  font-size: large;
+  border-radius: 10px;
+}
+button:hover,
+button:focus{
+   background-color: teal;
+   
+}
+input {
+  padding: 5px;
+  border-color: teal;
+}
