@@ -11,7 +11,7 @@ const refs = {
 }
 
 refs.btnInput.setAttribute('disabled', '');
-
+let timer = null;
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -24,14 +24,18 @@ const options = {
                 refs.btnInput.setAttribute('disabled', '');
                 return Notiflix.Notify.failure('😪 Please choose a date in the future');
                 
-            }
-        const timer = new Timer({
+        }
+        if (timer) {
+         return   Notiflix.Notify.warning('Таймер запущений, оновіть сторінку');
+        }
+         timer = new Timer({
            onTik: updateDateFace,
            onStart:selectedInx,
-});
+        });
+        
         refs.btnInput.addEventListener('click', () => {
-    timer.start();
-})
+            timer.start();
+        }, )
         refs.btnInput.removeAttribute('disabled');
         refs.btnInput.classList.add('active');  
   },
@@ -48,7 +52,7 @@ class Timer {
       
     };
  start() {
-        if(this.isActive) {
+     if (this.isActive) {  
         return;
     }
     const startTime = this.onStart;
