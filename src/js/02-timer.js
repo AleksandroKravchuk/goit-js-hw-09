@@ -26,15 +26,16 @@ const options = {
                 
         }
         if (timer) {
-         return   Notiflix.Notify.warning('Таймер запущений, оновіть сторінку');
+            return timer.onStart = selectedInx;
+
         }
          timer = new Timer({
            onTik: updateDateFace,
            onStart:selectedInx,
         });
-        
         refs.btnInput.addEventListener('click', () => {
-            timer.start();
+            timer.start(); 
+            
         }, )
         refs.btnInput.removeAttribute('disabled');
         refs.btnInput.classList.add('active');  
