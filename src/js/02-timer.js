@@ -1,23 +1,16 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
 
 const refs = {
-    onInput: document.querySelector("#datetime-picker"), 
     btnInput: document.querySelector("button"), 
-    timer: document.querySelector(".timer"),
-    valueTimer: document.querySelector(".value"),
+    daysValue : document.querySelector('.value[data-days]'),
+    horseValue :  document.querySelector('.value[data-hours]'),
+    minutesValue :  document.querySelector('.value[data-minutes]'),
+    secondsValue :  document.querySelector('.value[data-seconds]'),
 }
 
-console.log(refs.onInput);
-console.log(refs.btnInput);
-console.log(refs.timer);
-console.log(refs.valueTimer);
-
 refs.btnInput.setAttribute('disabled', '');
-
-// flatpickr(element, {});
-
-
 
 const options = {
   enableTime: true,
@@ -25,41 +18,85 @@ const options = {
   defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-
-        refs.onInput.addEventListener('input', (evt) => {
-            
-            console.log(evt.currentTarget.value)
-        const addValue = evt.currentTarget.value;
-        const date = new Date(addValue);
-            
-            // const currentData = selectedDates[0];
-            // const cur = new Date(currentData);
-       
-            if (date.getTime() < new Date().getTime()) {
+        const selectedInx = selectedDates[0].getTime();
+        
+        if (selectedInx < Date.now()) {
                 refs.btnInput.setAttribute('disabled', '');
-                return alert('Ошибка');
+                return Notiflix.Notify.failure('😪 Please choose a date in the future');
                 
             }
-            // selectedDates = addValue;
-            // const selYear = [...selectedDates]
-            // console.log(selectedDates[data.minute]);
-            refs.btnInput.removeAttribute('disabled');
-           refs.btnInput.classList.add('active');
-    // console.log(evt.currentTarget.value)
-            
-            
-            
+        const timer = new Timer({
+           onTik: updateDateFace,
+           onStart:selectedInx,
+});
+        refs.btnInput.addEventListener('click', () => {
+    timer.start();
 })
-
-        
-      
+        refs.btnInput.removeAttribute('disabled');
+        refs.btnInput.classList.add('active');  
   },
 };
 
 flatpickr("#datetime-picker", options);
-// flatpickr.
+
+class Timer {
+    constructor({onTik,onStart}) {
+        this.intrvalId = null;
+        this.isActive = false;  
+        this.onTik = onTik;
+        this.onStart = onStart;
+      
+    };
+ start() {
+        if(this.isActive) {
+        return;
+    }
+    const startTime = this.onStart;
+    this.isActive = true;
+    this.intrvalId = setInterval(() => {
+         
+         const currentTime = Date.now();
+         const deltaTime = startTime - currentTime;
+         const time = convertMs(deltaTime);
+         this.onTik(time);
+         
+           if (deltaTime < 1000) {
+               clearInterval(this.intrvalId);
+               Notiflix.Notify.success('I am finished');
+               refs.btnInput.classList.remove('active'); 
+               refs.btnInput.setAttribute('disabled','');
+     }
+     }, 1000);
+    };
+}
 
 
-//  if (!title || !task) return notyf.error('Please fill in all fields');
+function convertMs(ms) {
+  // Number of milliseconds per unit of time
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
 
-//   notyf.success('Todo added');
+  // Remaining days
+  const days = addLeadingZero(Math.floor(ms / day)) ;
+  // Remaining hours
+  const hours = addLeadingZero(Math.floor((ms % day) / hour)) ;
+  // Remaining minutes
+  const minutes = addLeadingZero (Math.floor(((ms % day) % hour) / minute)) ;
+  // Remaining seconds
+  const seconds = addLeadingZero (Math.floor((((ms % day) % hour) % minute) / second)) ;
+
+  return { days, hours, minutes, seconds };
+}
+
+function addLeadingZero(value){
+    return String(value).padStart(2, '0');
+}
+
+function updateDateFace({ days, hours, minutes, seconds }) {
+refs.daysValue.textContent = `${days}`;
+refs.horseValue.textContent = `${hours}`;
+refs.minutesValue.textContent = `${minutes}`;
+refs.secondsValue.textContent = `${seconds}`;
+}
