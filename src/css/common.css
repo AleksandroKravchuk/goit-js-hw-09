@@ -28,21 +28,23 @@ margin-right: 10px;
 color: teal;
 display: flex;
 text-align: center;
+font-size: 40px;
 }
 .label{
   text-shadow: 2px ;
 }
 button{
   padding: 2px 30px;
-  cursor: pointer;
-  transition: all 300ms linear;
   font-size: large;
   border-radius: 10px;
 }
-button:hover,
-button:focus{
+.active{
+cursor: pointer;
+transition: all 300ms linear;
+}
+.active:hover,
+.active:focus{
    background-color: teal;
-   
 }
 input {
   padding: 5px;
