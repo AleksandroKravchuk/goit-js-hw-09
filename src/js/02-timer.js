@@ -35,8 +35,6 @@ const options = {
         });
         refs.btnInput.addEventListener('click', () => {
             timer.start(); 
-            refs.btnInput.setAttribute('disabled', '');
-            refs.btnInput.classList.remove('active'); 
         }, )
         refs.btnInput.removeAttribute('disabled');
         refs.btnInput.classList.add('active');  
@@ -69,6 +67,8 @@ class Timer {
            if (deltaTime < 1000) {
                clearInterval(this.intrvalId);
                Notiflix.Notify.success('I am finished');
+               refs.btnInput.setAttribute('disabled', '');
+               refs.btnInput.classList.remove('active'); 
      }
      }, 1000);
     };
