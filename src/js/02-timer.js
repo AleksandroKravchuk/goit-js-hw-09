@@ -4,6 +4,7 @@ import Notiflix from 'notiflix';
 
 const refs = {
     btnInput: document.querySelector("button"), 
+    dateTimePicker: document.querySelector('#datetime-picker'),
     daysValue : document.querySelector('.value[data-days]'),
     horseValue :  document.querySelector('.value[data-hours]'),
     minutesValue :  document.querySelector('.value[data-minutes]'),
@@ -35,6 +36,7 @@ const options = {
         });
         refs.btnInput.addEventListener('click', () => {
             timer.start(); 
+            refs.dateTimePicker.setAttribute('disabled', '')
         }, )
         refs.btnInput.removeAttribute('disabled');
         refs.btnInput.classList.add('active');  
